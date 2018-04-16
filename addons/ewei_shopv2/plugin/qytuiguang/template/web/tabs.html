@@ -1,0 +1,52 @@
+<div class='menu-header'>{php echo $this->plugintitle}</div>
+
+{ifp 'qytuiguang.partner|qytuiguang.level'}
+<ul>
+    {ifp 'qytuiguang.partner'}<li {if $_W['routes']=='qytuiguang.agent'}class="active"{/if}><a href="{php echo webUrl('qytuiguang/agent')}">推广商管理</a></li>{/if}
+   <!--  {ifp 'qytuiguang.level'}<li {if $_W['routes']=='qytuiguang.level'}class="active"{/if}><a href="{php echo webUrl('qytuiguang/level')}">推广商等级</a></li>{/if} -->
+</ul>
+{/if}
+
+<style type='text/css'>
+    .qytuiguang-list a {
+        position: relative;
+    }
+    .qytuiguang-list span  {
+        float:right;margin-right:20px;
+    }
+</style>
+{ifp 'qytuiguang.bonus.status0|qytuiguang.bonus.status1|qytuiguang.bonus.status2|qytuiguang.bonus.build'}
+
+
+{php $totals = $this->model->getTotals()}
+<div class='menu-header'>结算单</div>
+<ul class="qytuiguang-list">
+
+    <!-- {ifp 'qytuiguang.bonus.status0'}<li {if ($_W['routes']=='qytuiguang.bonus.status0') || ($_W['routes']=='qytuiguang.bonus.detail' && $data['status']==0)}class="active"{/if}><a href="{php echo webUrl('qytuiguang/bonus/status0')}">待确认 <span  class='text-cancel'  id="total0">-</span></a></li>{/if} -->
+    {ifp 'qytuiguang.bonus.status1'}<li {if ($_W['routes']=='qytuiguang.bonus.status1') || ($_W['routes']=='qytuiguang.bonus.detail' && $data['status']==1)}class="active"{/if}><a href="{php echo webUrl('qytuiguang/bonus/status1')}">待结算 <span  class='text-danger' id="total1">-</span></a></li>{/if}
+    {ifp 'qytuiguang.bonus.status2'}<li {if ($_W['routes']=='qytuiguang.bonus.status2') || ($_W['routes']=='qytuiguang.bonus.detail' && $data['status']==2)}class="active"{/if}><a href="{php echo webUrl('qytuiguang/bonus/status2')}">已结算 <span  class='text-success' id="total2">-</span></a></li>{/if}
+    <!-- {ifp 'qytuiguang.bonus.build'}<li {if $_W['routes']=='qytuiguang.bonus.build'}class="active"{/if}><a href="{php echo webUrl('qytuiguang/bonus/build')}">创建结算单</a></li>{/if} -->
+</ul>
+{/if}
+
+{ifp 'qytuiguang.cover|qytuiguang.notice|qytuiguang.set'}
+<div class="menu-header">设置</div>
+<ul>
+    <!-- {ifp 'qytuiguang.cover'}<li {if $_W['routes']=='qytuiguang.cover'}class="active"{/if}><a href="{php echo webUrl('qytuiguang/cover')}">入口设置</a></li>{/if} -->
+   <!--  {ifp 'qytuiguang.notice'}<li {if $_W['routes']=='qytuiguang.notice'}class="active"{/if}><a href="{php echo webUrl('qytuiguang/notice')}">通知设置</a></li>{/if} -->
+    {ifp 'qytuiguang.set'}<li {if $_W['routes']=='qytuiguang.set'}class="active"{/if}><a href="{php echo webUrl('qytuiguang/set')}">基础设置</a></li>{/if}
+</ul>
+
+{/if}
+
+<script>
+    $(function () {
+        $.ajax({type: "GET",async: false,url: "{php echo webUrl('qytuiguang/bonus/totals')}",dataType:"json",success: function(data){
+            var res = data.result;
+            // $("#total0").text(res.total0);
+            $("#total1").text(res.djs);
+            $("#total2").text(res.yjs);
+        }
+        });
+    });
+</script>

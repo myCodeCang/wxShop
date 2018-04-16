@@ -1,0 +1,2 @@
+ALTER TABLE `qywxshop`.`ims_uni_settings` ADD COLUMN `qyuser` varchar(2000) COMMENT 'qy用户管理系统通信配置' AFTER `menuset`;
+INSERT INTO `qywxshop`.`ims_core_menu` (`id`, `pid`, `title`, `name`, `url`, `append_title`, `append_url`, `displayorder`, `type`, `is_display`, `is_system`, `permission_name`) VALUES ('92', '80', 'qy会员整合', 'setting', './index.php?c=mc&a=qyuser&', '', '', '0', 'url', '1', '1', 'mc_qyuser');

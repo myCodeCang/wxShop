@@ -1,0 +1,185 @@
+{template '_header'}
+
+<div class="page-heading">
+   <!--  <span class='pull-right'>
+        {ifp 'qytuiguang.bonus.build'}
+        	<a class='btn btn-primary btn-sm' href="{php echo webUrl('qytuiguang/bonus/build')}"><i class='fa fa-plus'></i> 创建结算单</a>
+        {/if}
+    </span>
+    <h2>
+        {if empty($status)}待确认{elseif $status==1}待结算{elseif $status==2}已结算{/if}结算单 <small>总数: <span class="text text-danger">{$total}</span>
+
+        分红总额: <span class="text text-danger">{php echo $totalmoneys['b1'] +$totalmoneys['b2'] + $totalmoneys['b3']}</span>
+        省级: <span class="text text-danger">{$totalmoneys['b1']}</span>
+        市级: <span class="text text-danger">{$totalmoneys['b2']}</span>
+        区级: <span class="text text-danger">{$totalmoneys['b3']}</span>
+
+
+    </small></h2> -->
+</div>
+<form action="./index.php" method="get" class="form-horizontal" role="form" id="form1">
+    <input type="hidden" name="c" value="site" />
+    <input type="hidden" name="a" value="entry" />
+    <input type="hidden" name="m" value="ewei_shopv2" />
+    <input type="hidden" name="do" value="web" />
+    <input type="hidden" name="r" value="qytuiguang.bonus.status1" />
+
+    <div class="page-toolbar row m-b-sm m-t-sm">
+    <div class="col-sm-5">
+
+            <div class="input-group-btn">
+                <button class="btn btn-default btn-sm"  type="button" data-toggle='refresh' style="float:left;"><i class='fa fa-refresh'></i></button>
+                {if $audit}
+                <button class="btn btn-default btn-sm" type="button" data-toggle='batch-remove' data-confirm="结算后不可修改！确认要结算吗?" data-href="{php echo webUrl('qytuiguang/bonus/jiesuan')}"> 批量结算</button>
+                {/if}
+                {php echo tpl_form_field_daterange('time', array('starttime'=>date('Y-m-d H:i', $starttime),'endtime'=>date('Y-m-d H:i', $endtime)),true);}
+            </div>
+
+        </div> 
+      
+
+        <div class="col-sm-6 pull-right">
+        
+              
+         <select name='orderstatus' class='form-control  input-sm select-md' style="width:110px;"  >
+                            <option value='-1'>订单状态</option>
+                            <option value='1' {if $orderstatus=='1'}selected{/if}>已付款</option>
+                            <option value='2' {if $orderstatus=='2'}selected{/if}>已发货</option>
+                            <option value='3' {if $orderstatus=='3'}selected{/if}>已完成</option>
+                        </select> 
+
+             
+              
+
+                             
+                
+            <div class="input-group">
+               <input type="hidden" class="form-control input-sm"  name="status" value="{$status}" />
+                <input type="text" class="form-control input-sm"  name="keyword" value="{$_GPC['keyword']}" placeholder="订单号/店铺/推广商"/>
+				 <span class="input-group-btn">
+                                
+                                        <button class="btn btn-sm btn-primary" type="submit"> 搜索</button>
+                                                                            	   <!--  {ifp 'qytuiguang.bonus.export'}
+                        <button type="submit" name="export" value="1" class="btn btn-success btn-sm">导出</button>
+                        {/if} -->
+				</span>
+            </div>
+
+        </div>
+    </div>
+
+ 
+</form>
+
+{if count($list)>0}
+
+<table class="table table-hover  table-responsive ">
+    <thead class="navbar-inner">
+    <tr>
+     {if $audit}
+        <th style="width:25px;"><input type='checkbox' /></th>
+     {/if}   
+        <th style='width:200px;'>订单号</th>
+        <th style='width:130px;'>订单金额</th>
+        <th style='width:70px;'>订单状态</th>
+        <th style='width:130px;'>创建时间</th>
+        <th style='width:120px;'>推广商</th>
+        <th style='width:120px;'>店铺</th>
+        <th style='width:100px;'>分红金额</th>
+        <th style='width:70px;'>状态</th>
+        <th style='width:70px;'>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {loop $list $row}
+    <tr>
+ {if $audit}
+        <td><input type='checkbox'   value="{$row['id']}"/></td>
+ {/if}
+        <td>{$row['ordersn']}</td>
+        <td>金额：<label class="label label-danger">{$row['price']}</label></td>
+        <td>
+            {if $row['status']==0}
+            未付款
+            {/if}
+            {if $row['status']==1}
+            已付款
+            {/if}
+            {if $row['status']==2}
+            已发货
+            {/if}
+            {if $row['status']==3}
+            已完成
+            {/if}
+            {if $row['status']==-1}
+            已取消
+            {/if}
+        </td>
+        <td>{php echo date('Y-m-d',$row['createtime'])}</td>
+        <td> {$row['mobile']}</td>
+        <td> {$row['merchname']} </td>
+        <td>
+            金额：<label class="label label-danger">{php echo round($row['price']*$row['proportion']/100,2)}</label>
+        </td>
+        <td>
+            {if $row['is_tj']==1}
+            <label class="label label-primary">已结算</label>
+            {else}
+            <label class="label label-danger">待结算</label>
+            {/if}
+        </td>
+        <td  style="overflow:visible;">
+            <div class="btn-group btn-group-sm" >
+                     <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" href="javascript:;">操作 <span class="caret"></span></a>
+                <ul class="dropdown-menu dropdown-menu-left" role="menu" style='z-index: 9999'>
+                     <li> <a class='btn btn-default btn-sm' href="{php echo webUrl('order/detail',array('id' => $row['id']))}">详情</a></li>
+                     {if $row['is_tj'] != 1}
+                     <li> <a data-toggle='ajaxRemove' href="{php echo webUrl('qytuiguang/bonus/jiesuan', array('id' => $row['id']))}"class="btn btn-default btn-sm" data-confirm='结算后不可修改！确认要结算此订单?'>结算</a></li>
+                     {/if}
+                </ul>
+            </div>
+        </td>
+    </tr>
+    {/loop}
+    </tbody>
+</table>
+{$pager}
+
+{else}
+<div class='panel panel-default'>
+    <div class='panel-body' style='text-align: center;padding:30px;'>
+        暂时没有任何分红明细!
+    </div>
+</div>
+{/if}
+<script language="javascript">
+    require(['bootstrap'],function(){
+        $("[rel=pop]").popover({
+            trigger:'manual',
+            placement : 'left',
+            title : $(this).data('title'),
+            html: 'true',
+            content : $(this).data('content'),
+            animation: false
+        }).on("mouseenter", function () {
+            var _this = this;
+            $(this).popover("show");
+            $(this).siblings(".popover").on("mouseleave", function () {
+                $(_this).popover('hide');
+            });
+        }).on("mouseleave", function () {
+            var _this = this;
+            setTimeout(function () {
+                if (!$(".popover:hover").length) {
+                    $(_this).popover("hide")
+                }
+            }, 100);
+        });
+
+
+    });
+
+
+</script>
+
+{template '_footer'}

@@ -1,0 +1,64 @@
+{template '_header'}
+{template 'commission/common'}
+<div class="fui-page fui-page-current page-commission-order">
+    <div class="fui-header">
+        <div class="fui-header-left">
+            <a class="back"></a>
+        </div>
+        <div class="title">推广明细</div>
+		 
+    </div>
+    <div class="fui-content navbar">
+		<div class='fui-cell-group' style='margin-top:0px;'>
+			<div class='fui-cell'>
+				<div class='fui-cell-label' style='width:auto'>累计佣金</div>
+				<div class='fui-cell-info'></div>
+				<div class='fui-cell-remark noremark'>+{if $single_merch_bonus}{$single_merch_bonus}{else}0{/if}</div>
+			</div>
+		</div>
+        <!-- <div class="fui-tab fui-tab-warning" id="tab">
+            <a class="active" data-tab='status'>所有</a>
+            <a href="javascript:void(0)" data-tab='status0'>待付款</a>
+            <a href="javascript:void(0)" data-tab='status1'>已付款</a>
+            <a href="javascript:void(0)" data-tab='status3'>已完成</a>
+        </div> -->
+
+ 
+        <div class="fui-according-group" id="container">
+            {if !empty($list)}
+                {loop $list $order}
+                   
+                <div class='fui-according'>
+                    <div class='fui-according-header'>
+                                <span class="left">{$order['ordersn']}<br>
+                                    <span> {php echo date('Y-m-d H:i:s',$order['createtime'])}</span>
+                                </span>
+                        <span class="right">+{$order['bouns']}<br><span>{if $order['is_tj'] ==1}已分成{else}未分成{/if}</span></span>
+                    </div>
+                    <div class='fui-according-content'>
+                        <div class='content-block'>
+                            <div class="fui-list">
+                                <div class="fui-list-media">
+                                    <!-- <img src="{php echo $_SERVER['HTTP_HOST']}/attachment/{$order['thumb']}" class="round" style='width:2rem;height:2rem;'> -->
+                                </div>
+                                <div class="fui-list-inner">
+                                    <div class="row">
+                                        <div class="row-text" style="font-size: 14px">{$order['title']}</div>
+                                    </div>
+                                    <div class="subtitle" style="font-size: 14px"> x {$order['total']}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+               {/loop}
+            {else}
+                    <div class='content-empty' >
+                        <i class='icon icon-list'></i><br/>暂时没有任何订单
+                    </div>
+            {/if}     
+        </div>
+        
+   </div>
+</div>
+

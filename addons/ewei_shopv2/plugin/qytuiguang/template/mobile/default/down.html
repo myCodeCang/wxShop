@@ -1,0 +1,48 @@
+{template '_header'}
+{template 'commission/common'}
+<div class="fui-page fui-page-current page-commission-down">
+    <div class="fui-header">
+        <div class="fui-header-left">
+            <a class="back"></a>
+        </div>
+        <div class="title">我的推广店铺({$total_merch})</div>
+    </div>
+    <div class="fui-content navbar">
+
+        <div class="fui-title text-danger">
+        推广总佣金：{$total_price}
+            
+        </div>
+        <div class="fui-list-group" id="container"></div>
+       {if !empty($list)}
+		       {loop $list $user}
+				<div class="fui-list">
+					<div class="fui-list-media">
+						<i class="icon icon-my2"></i>
+					</div>
+					<div class="fui-list-inner">
+						<div class="row">
+							<a class="fui-cell" href="{php echo mobileUrl('qytuiguang/order',array('merchid'=>$user['id']))}">
+						      <div class="row-text">
+								{$user['merchname']}
+						      </div>
+						      </a>
+						</div>
+						<!-- <div class="subtitle">
+						    注册时间:  {php echo date('Y-m-d',$user['applytime'])}
+						</div> -->
+					</div>
+					<div class="row-remark">
+						<p>+{$user['single_merch_bonus']}</p>
+						<p>{$user['ordercount']}个订单</p>
+					</div>
+				</div>
+				{/loop}
+		{else}
+				<div class='content-empty' style='display:none;'>
+						<i class='icon icon-group'></i><br/>暂时没有任何数据
+				</div>
+		{/if}
+    </div>
+</div>
+

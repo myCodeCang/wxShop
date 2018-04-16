@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest versionCode="0.6">
+    <identifie><![CDATA[style24]]></identifie>
+    <title><![CDATA[微网站style24]]></title>
+	<type><![CDATA[often]]></type>
+    <description><![CDATA[由微网站提供默认微站模板套系]]></description>
+    <author><![CDATA[微网站]]></author>
+    <url><![CDATA[http://www.baidu.com]]></url>
+	<sections><![CDATA[0]]></sections>
+	<settings>
+	</settings>
+</manifest>
